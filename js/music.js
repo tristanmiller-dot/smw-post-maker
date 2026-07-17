@@ -61,7 +61,9 @@ export function setupMusic(getDoc, onChange) {
         results.appendChild(el);
       });
     } catch (err) {
-      results.innerHTML = `<div class="hint">search failed — is the app running via <b>node server.js</b>? (${err.message})</div>`;
+      results.innerHTML = location.hostname.endsWith("github.io")
+        ? '<div class="hint">track search needs the local server (<b>node server.js</b>) — on this hosted version, use <b>upload audio</b> instead.</div>'
+        : `<div class="hint">search failed — is the app running via <b>node server.js</b>? (${err.message})</div>`;
     }
   }
 
