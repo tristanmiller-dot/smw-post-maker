@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMW Post Maker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=DM+Serif+Display:ital@0;1&family=Permanent+Marker&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="topbar">
+  <span class="chip b">SMW Post Maker</span>
+  <span class="chip">a poster machine</span>
+  <button class="chip" id="undo" title="undo (⌘Z)" disabled>↩ undo</button>
+  <button class="chip" id="redo" title="redo (⇧⌘Z)" disabled>redo ↪</button>
+  <span class="spacer"></span>
+  <label class="chip">format
+    <select id="format">
+      <option value="3:4">Feed 1080×1440</option>
+      <option value="9:16">Reel/Story 1080×1920</option>
+    </select>
+  </label>
+  <label class="chip">length
+    <select id="duration">
+      <option value="4">4s</option>
+      <option value="6">6s</option>
+      <option value="8" selected>8s</option>
+      <option value="10">10s</option>
+      <option value="15">15s</option>
+      <option value="20">20s</option>
+      <option value="30">30s</option>
+    </select>
+  </label>
+  <button class="chip b" id="export">Export MP4</button>
+  <button class="chip" id="exportPng">PNG</button>
+  <span class="chip" id="exportStatus" hidden></span>
+</div>
+
+<div id="main">
+
+  <!-- ============ LEFT: layouts / background / music ============ -->
+  <div id="left" class="panel">
+    <div class="section">
+      <span class="chip b sec-title">Layouts</span>
+      <div id="layouts" class="btn-grid"></div>
+    </div>
+
+    <div class="section">
+      <span class="chip b sec-title">Background</span>
+      <div id="bgPanel"></div>
+    </div>
+
+    <div class="section">
+      <span class="chip b sec-title">Soundtrack</span>
+      <div id="musicPanel">
+        <div class="row">
+          <input class="chip" id="musicQ" type="text" placeholder="search a track…">
+          <button class="chip" id="musicGo">go</button>
+        </div>
+        <div class="hint">30s preview clips · or <label class="linky">upload audio<input type="file" id="musicFile" accept="audio/*" hidden></label></div>
+        <div id="musicResults"></div>
+        <div id="musicSelected" hidden></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CENTER: canvas ============ -->
+  <div id="stage">
+    <div id="canvasWrap">
+      <canvas id="preview"></canvas>
+      <canvas id="overlay"></canvas>
+    </div>
+  </div>
+
+  <!-- ============ RIGHT: layers + properties ============ -->
+  <div id="right" class="panel">
+    <div class="section">
+      <span class="chip b sec-title">Layers</span>
+      <div class="row">
+        <button class="chip" id="addText">+ text</button>
+        <button class="chip" id="addImage">+ image</button>
+        <button class="chip" id="addSticker">+ sticker</button>
+        <button class="chip" id="addBlob">+ blob</button>
+      </div>
+      <div id="layerList"></div>
+    </div>
+    <div class="section">
+      <span class="chip b sec-title">Selected</span>
+      <div id="props"><div class="hint">nothing selected — click the canvas</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- asset picker modal -->
+<div id="picker" hidden>
+  <div id="pickerBox">
+    <div class="row" style="justify-content:space-between">
+      <span class="chip b" id="pickerTitle">Pick an image</span>
+      <button class="chip" id="pickerClose">×</button>
+    </div>
+    <div id="pickerGrid"></div>
+    <label class="chip" id="pickerUploadWrap">upload image(s)<input type="file" id="pickerUpload" accept="image/*" multiple hidden></label>
+  </div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
