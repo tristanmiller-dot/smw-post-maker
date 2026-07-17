@@ -108,7 +108,12 @@ export async function exportMP4(doc, onProgress) {
    returns interleaved stereo f32 @48k */
 async function renderAudio(doc, dur) {
   const m = doc.music;
-  const octx = new OfflineAudioContext(2, Math.ceil(48000 * dur), 48000);
+  /* stop on a whole AAC block (1024 samples), two blocks shy of the
+     video's end — encoder padding otherwise makes the audio track
+     outlast the video, which players show as a black final frame */
+  const samples = Math.max(1024, (Math.floor((48000 * dur) / 1024) - 2) * 1024);
+  const aDur = samples / 48000;
+  const octx = new OfflineAudioContext(2, samples, 48000);
   const src = octx.createBufferSource();
   src.buffer = m.buffer;
   src.loop = true;
@@ -117,8 +122,8 @@ async function renderAudio(doc, dur) {
   const gain = octx.createGain();
   gain.gain.value = m.volume ?? 1;
   /* gentle fade-out on the last half second so loops don't clip rudely */
-  gain.gain.setValueAtTime(m.volume ?? 1, Math.max(0, dur - 0.5));
-  gain.gain.linearRampToValueAtTime(0, dur);
+  gain.gain.setValueAtTime(m.volume ?? 1, Math.max(0, aDur - 0.5));
+  gain.gain.linearRampToValueAtTime(0, aDur);
   src.connect(gain).connect(octx.destination);
   src.start(0, Math.min(m.offset || 0, Math.max(0, m.buffer.duration - 0.1)));
   const buf = await octx.startRendering();
