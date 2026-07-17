@@ -667,8 +667,19 @@ function canvasPoint(e) {
 let drag = null;
 
 overlay.style.pointerEvents = "none";
+/* touch: two fingers pinch-resize the selected layer */
+const pointers = new Map();
+let pinch = null;
+
 preview.addEventListener("pointerdown", (e) => {
   const p = canvasPoint(e);
+  pointers.set(e.pointerId, p);
+  if (pointers.size === 2 && selected) {
+    drag = null; snapGuides = null;
+    const [a, b] = [...pointers.values()];
+    pinch = { d0: Math.hypot(a.x - b.x, a.y - b.y) || 1, size: selected.size, w: selected.w, h: selected.h };
+    return;
+  }
   selected = null;
   for (let i = doc.layers.length - 1; i >= 0; i--) {
     const b = renderer.bboxOf(doc.layers[i]);
@@ -688,6 +699,17 @@ const SNAP = 14, GRID = 20;
 let snapGuides = null;
 
 preview.addEventListener("pointermove", (e) => {
+  if (pointers.has(e.pointerId)) pointers.set(e.pointerId, canvasPoint(e));
+  if (pinch && selected && pointers.size >= 2) {
+    const [a, b] = [...pointers.values()];
+    const k = (Math.hypot(a.x - b.x, a.y - b.y) || 1) / pinch.d0;
+    if (selected.type === "text") selected.size = Math.max(10, Math.min(600, pinch.size * k));
+    else if (selected.type === "image" || selected.type === "blob") {
+      selected.w = Math.max(40, pinch.w * k);
+      selected.h = Math.max(40, pinch.h * k);
+    } else selected.w = Math.max(40, pinch.w * k);
+    return;
+  }
   if (!drag) return;
   const p = canvasPoint(e);
   let nx = drag.ox + (p.x - drag.sx);
@@ -715,7 +737,13 @@ preview.addEventListener("pointermove", (e) => {
   drag.layer.x = nx;
   drag.layer.y = ny;
 });
-preview.addEventListener("pointerup", () => { drag = null; snapGuides = null; });
+const endPointer = (e) => {
+  pointers.delete(e.pointerId);
+  if (pointers.size < 2) pinch = null;
+  if (!pointers.size) { drag = null; snapGuides = null; }
+};
+preview.addEventListener("pointerup", endPointer);
+preview.addEventListener("pointercancel", endPointer);
 
 preview.addEventListener("wheel", (e) => {
   if (!selected) return;

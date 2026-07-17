@@ -110,7 +110,7 @@ body { display: flex; flex-direction: column; }
     repeating-conic-gradient(#e2e2e2 0% 25%, #ececec 0% 50%) 0 0 / 24px 24px;
 }
 #canvasWrap { position: relative; box-shadow: 0 0 0 1px #000; font-size: 0; }
-#preview { display: block; }
+#preview { display: block; touch-action: none; }
 #overlay { position: absolute; inset: 0; }
 
 /* ---- layer list ---- */
@@ -156,3 +156,32 @@ body { display: flex; flex-direction: column; }
 #pickerGrid .stick { object-fit: contain; padding: 8px; }
 
 #exportStatus { background: #ffe600; }
+
+/* ---- mobile: canvas pinned up top, panels stack beneath ---- */
+@media (max-width: 860px) {
+  html, body { height: 100dvh; }
+  #main {
+    display: flex; flex-direction: column;
+    overflow-y: auto;
+  }
+  #stage {
+    order: 0; flex: none;
+    position: sticky; top: 0; z-index: 5;
+    height: 46dvh; padding: 10px;
+    border-bottom: 1px solid #000;
+  }
+  #right { order: 1; }   /* layers + selected live right under the canvas */
+  #left { order: 2; }
+  .panel { overflow: visible; }
+  #left { border-right: none; }
+  #right { border-left: none; }
+  /* fatter touch targets */
+  .chip { padding: 5px 10px; font-size: 14px; }
+  select, input[type="text"], input[type="number"] { padding: 5px 6px; font-size: 14px; }
+  textarea { font-size: 14px; }
+  .swatch { width: 26px; height: 26px; }
+  input[type="color"] { width: 34px; height: 30px; }
+  input[type="range"] { height: 28px; }
+  .layer-item { padding: 6px 8px; }
+  .layer-item button { font-size: 16px; padding: 2px 6px; }
+}
