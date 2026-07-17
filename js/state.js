@@ -202,10 +202,9 @@ const DEFAULT_LAYOUTS = [
     bg: { type: "solid", color1: "#0d0d0d", color2: "#000000", grain: true, word: "", font: "Sligoil", images: [] },
     layers: [
       { type: "image", name: "image", asset: "ride-blur2", x: 540, y: 720, w: 1080, h: 1440, rot: 0, effects: ["strips", "smear", "threshold"], colorA: "#ffffff", colorB: BLUE, animate: true },
-      { type: "text", name: "text", text: "the inaugural\nwheeler", x: 82.6, y: 60, size: 121, rot: 0, font: "Sligoil", weight: 700, align: "left", color: "#000000", chip: true, chipColor: "#ffffff", tracking: 0, lineHeight: 1.3, mutate: true, anim: "scramble", mirror: false, hollow: false, glow: false, warp: "none", warpAmt: 50 },
+      { type: "text", name: "text", text: "the inaugural\nwheeler", x: 84.2, y: 80, size: 121, rot: 0, font: "Sligoil", weight: 700, align: "left", color: "#000000", chip: true, chipColor: "#ffffff", tracking: 0, lineHeight: 1.3, mutate: true, anim: "scramble", mirror: false, hollow: false, glow: false, warp: "none", warpAmt: 50 },
       { type: "text", name: "details", text: "TUE 28 JUL — 6:15PM\n20KM — ANALOG PACE\nMEET AT THE FOUNTAIN", x: 60, y: 1140, size: 44, rot: 0, font: "Sligoil", weight: 700, align: "left", color: "#000000", chip: true, chipColor: "#ffffff", tracking: 0, lineHeight: 1.3, mutate: false, anim: "none", mirror: false, hollow: false, glow: false, warp: "persp", warpAmt: 50 },
-      { type: "sticker", name: "sticker", asset: "logo-smiley-white", x: 360, y: 720, w: 378, rot: 0, spin: 12 },
-      { type: "image", name: "image", asset: "ride-street", x: 1020, y: 720, w: 756, h: 594, rot: 0, effects: ["strips", "duotone"], colorA: BLUE, colorB: "#d7ff3e", animate: true },
+      { type: "sticker", name: "sticker", asset: "logo-smiley-white", x: 420, y: 720, w: 378, rot: 0, spin: 12 },
     ],
   },
   {
